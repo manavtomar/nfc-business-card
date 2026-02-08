@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Card | Liquid Glass</title>
+    <title>NFC Digital Business Card</title>
     <style>
         :root {
-            /* Liquid Glass Variables */
-            --glass-main: rgba(255, 255, 255, 0.15);
-            --glass-wallet: rgba(255, 255, 255, 0.65); /* More opaque for visibility */
-            --glass-border: rgba(255, 255, 255, 0.4);
             --apple-text: #1d1d1f;
-            --apple-subtext: #48484a;
+            --liquid-bg: rgba(255, 255, 255, 0.22);
+            --liquid-border: rgba(255, 255, 255, 0.6);
+            --specular: rgba(255, 255, 255, 0.9);
+            --glass-wallet: rgba(255, 255, 255, 0.65);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-12px) rotateX(3deg); }
+            100% { transform: translateY(0px) rotateX(0deg); }
         }
 
         body {
@@ -21,160 +26,155 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* iOS Mesh Background */
-            background: #f2f2f7;
+            overflow-x: hidden;
+            background: #fbfbfd;
+            /* iOS 26 Mesh Gradient */
             background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(255, 45, 85, 0.1) 0px, transparent 50%);
-            color: var(--apple-text);
+                radial-gradient(at 0% 0%, rgba(100, 210, 255, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(255, 100, 200, 0.25) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(0, 122, 255, 0.15) 0px, transparent 50%);
         }
 
-        .container {
+        .card {
             width: 88%;
             max-width: 380px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border-radius: 44px;
-            padding: 48px 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(60px) saturate(210%);
+            -webkit-backdrop-filter: blur(60px) saturate(210%);
+            border-radius: 52px;
+            padding: 50px 24px;
+            border: 1px solid var(--liquid-border);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1);
             text-align: center;
+            animation: float 6s ease-in-out infinite;
+            perspective: 1200px;
+            transition: transform 0.1s ease-out;
         }
 
         .profile-img {
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 18px;
-            border: 4px solid white;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            /* Mimics iCloud 3D depth */
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
         }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.022em;
-        }
+        h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -0.04em; color: var(--apple-text); }
+        .subtitle { font-size: 18px; color: #424245; margin: 8px 0 35px 0; font-weight: 400; }
 
-        .subtitle {
-            font-size: 17px;
-            color: var(--apple-subtext);
-            margin: 6px 0 35px 0;
-        }
-
-        /* The Main Liquid Button */
+        /* LIQUID BUTTONS */
         .btn-liquid {
-            display: block;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
             color: var(--apple-text);
-            background: var(--glass-main);
-            backdrop-filter: blur(20px) saturate(160%);
-            -webkit-backdrop-filter: blur(20px) saturate(160%);
-            border: 1px solid var(--glass-border);
-            padding: 18px;
-            border-radius: 20px;
             font-weight: 600;
             font-size: 17px;
+            padding: 18px;
             margin-bottom: 14px;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--liquid-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--liquid-border);
+            box-shadow: 
+                inset 0 1.5px 2px var(--specular),
+                0 10px 30px rgba(0,0,0,0.04);
+            transition: all 0.5s cubic-bezier(0.15, 1, 0.3, 1);
         }
 
-        /* Opaque Wallet Buttons */
-        .wallet-row {
-            display: flex;
-            gap: 12px;
-        }
-
+        /* Wallet Specific Styles */
+        .wallet-row { display: flex; gap: 12px; }
         .btn-wallet {
             flex: 1;
-            background: var(--glass-wallet); /* Increased opacity */
-            border-radius: 18px;
-            padding: 14px;
             font-size: 14px;
-            font-weight: 600;
-            /* White inner glow for depth */
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 4px 12px rgba(0,0,0,0.05);
+            background: var(--glass-wallet);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,1), 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        .btn-liquid:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.4);
+        /* The moving light sheen on touch */
+        .btn-liquid::after {
+            content: "";
+            position: absolute;
+            top: -100%; left: -100%;
+            width: 300%; height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
         }
 
-        .footer-links {
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
+        .btn-liquid:active::after { opacity: 1; transform: translate(15%, 15%); }
 
-        .footer-links a {
-            color: #007AFF;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-        }
+        .btn-liquid:active { transform: scale(0.95) translateY(3px); }
 
-        .qr-wrapper {
-            margin-top: 40px;
-        }
+        .footer-links { margin-top: 35px; display: flex; justify-content: center; gap: 25px; }
+        .footer-links a { color: #007AFF; text-decoration: none; font-size: 16px; font-weight: 500; }
 
-        .qr-code {
-            width: 100px;
-            height: 100px;
-            background: white;
-            padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .qr-text {
-            font-size: 11px;
-            color: var(--apple-subtext);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 12px;
-            font-weight: 600;
+        .qr-section { margin-top: 45px; }
+        .qr-code { 
+            width: 100px; padding: 10px; background: white; 
+            border-radius: 28px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); 
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <img src="https://via.placeholder.com/150" alt="Avatar" class="profile-img">
+<div class="card" id="mainCard">
+    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Boy.png" alt="Memoji" class="profile-img">
+    
     <h1>Your Name</h1>
     <p class="subtitle">Creative Director</p>
 
-    <a href="contact.vcf" class="btn-liquid">Save Contact</a>
+    <a href="contact.vcf" class="btn-liquid">
+        <span>Save Contact</span>
+    </a>
 
     <div class="wallet-row">
-        <a href="#" class="btn-liquid btn-wallet"> Wallet</a>
-        <a href="#" class="btn-liquid btn-wallet">Google Wallet</a>
+        <a href="#" class="btn-liquid btn-wallet">
+            <svg width="20" height="20" viewBox="0 0 256 256" style="margin-right: 8px;">
+                <path d="M213.3 42.7H42.7c-11.8 0-21.3 9.5-21.3 21.3v128c0 11.8 9.5 21.3 21.3 21.3h170.7c11.8 0 21.3-9.5 21.3-21.3V64c-.1-11.8-9.6-21.3-21.4-21.3zM42.7 64h170.7v21.3H42.7V64zm170.7 128H42.7v-85.3h170.7V192z"/>
+            </svg>
+            Wallet
+        </a>
+        <a href="#" class="btn-liquid btn-wallet">
+            <svg width="20" height="20" viewBox="0 0 48 48" style="margin-right: 8px;">
+                <path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 24 11.8 24 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/>
+            </svg>
+            G-Pay
+        </a>
     </div>
 
     <div class="footer-links">
         <a href="#">LinkedIn</a>
-        <a href="#">Email</a>
+        <a href="#">Website</a>
     </div>
 
-    <div class="qr-wrapper">
-        <div class="qr-text">Scan to Share</div>
-        <img id="qrImg" class="qr-code" src="" alt="QR Code">
+    <div class="qr-section">
+        <img id="qrImg" class="qr-code" src="" alt="QR">
     </div>
 </div>
 
 <script>
+    // QR Code Generation
     window.onload = function() {
         const qrImg = document.getElementById('qrImg');
         const currentUrl = encodeURIComponent(window.location.href);
         qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentUrl}&bgcolor=ffffff&color=1d1d1f&margin=1`;
     };
+
+    // iOS 26 Tilt Effect
+    const card = document.getElementById('mainCard');
+    document.addEventListener('mousemove', (e) => {
+        const x = (window.innerWidth / 2 - e.pageX) / 30;
+        const y = (window.innerHeight / 2 - e.pageY) / 30;
+        card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
 </script>
 
 </body>
