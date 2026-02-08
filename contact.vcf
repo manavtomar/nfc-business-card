@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:{{LastName}};{{FirstName}};;;
+FN:{{FirstName}} {{LastName}}
+ORG:{{Company Name}}
+TITLE:{{Job Title}}
+TEL;TYPE=CELL;TYPE=VOICE;TYPE=pref:{{Phone Number}}
+EMAIL;TYPE=WORK;TYPE=INTERNET:{{Email Address}}
+URL:{{Website URL}}
+ADR;TYPE=WORK:;;{{Street}};{{City}};{{State}};{{Zip}};{{Country}}
+NOTE:Scanned via NFC Business Card
+END:VCARD
